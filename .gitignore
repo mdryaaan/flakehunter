@@ -1,0 +1,21 @@
+# Binaries
+/bin/
+/flakehunter
+*.exe
+
+# Test and coverage output
+*.test
+*.out
+coverage.*
+
+# Local scratch
+/dist/
+*.local.json
+scan-results.json
+classified-results.json
+
+# Editor / OS
+.DS_Store
+.idea/
+.vscode/
+.claude/
