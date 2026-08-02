@@ -4,6 +4,21 @@ import (
 	"strings"
 )
 
+// anchorMarkers are the phrases specific enough to pin the excerpt window on.
+// Kept as an explicit list rather than a prefix of failureMarkers: slicing that
+// list by index silently excluded "--- fail:", the single most important marker
+// for Go test output, and the excerpt fell back to the whole log.
+var anchorMarkers = []string{
+	"##[error]",
+	"panic:",
+	"data race",
+	"fatal error:",
+	"--- fail:",
+	"process completed with exit code",
+	"assertion failed",
+	"traceback (most recent call last)",
+}
+
 // failureMarkers are the phrases that indicate a step actually failed, in
 // rough order of specificity. Matching is case-insensitive.
 var failureMarkers = []string{
@@ -80,7 +95,7 @@ func ErrorBlock(body string, before, after int) string {
 
 	for i := len(lines) - 1; i >= 0; i-- {
 		lower := strings.ToLower(lines[i])
-		for _, marker := range failureMarkers[:5] { // only the specific markers
+		for _, marker := range anchorMarkers {
 			if strings.Contains(lower, marker) {
 				anchor = i
 				break
