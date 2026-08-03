@@ -54,7 +54,17 @@ func ParseRepo(s string) (owner, repo string, err error) {
 
 // Client is the live GitHub API source.
 type Client struct {
-	api *gh.Client
+	api   *gh.Client
+	owner string
+	repo  string
+}
+
+// For sets the repository this client operates on. Kept separate from the
+// constructor so one authenticated client can scan several repositories.
+func (c *Client) For(owner, repo string) *Client {
+	c.owner = owner
+	c.repo = repo
+	return c
 }
 
 // NewClient builds an authenticated client. A token is optional for public
