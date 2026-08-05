@@ -56,7 +56,7 @@ func TestWriteMarkdown(t *testing.T) {
 	assert.Contains(t, out, "https://example.test/fail")
 
 	// A genuine bug outranks a network timeout, so it must appear first.
-	assert.Less(t, indexOf(out, "Genuine bug"), indexOf(out, "Network timeout ("),
+	assert.Less(t, indexOf(out, "— Genuine bug"), indexOf(out, "— Network timeout"),
 		"the most actionable category should lead the detail section")
 }
 
