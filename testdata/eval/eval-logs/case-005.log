@@ -1,0 +1,5 @@
+npm ERR! code EAI_AGAIN
+npm ERR! syscall getaddrinfo
+npm ERR! errno EAI_AGAIN
+npm ERR! request to https://registry.npmjs.org/@acme%2fsdk failed, reason: getaddrinfo EAI_AGAIN registry.npmjs.org
+##[error]Process completed with exit code 1.

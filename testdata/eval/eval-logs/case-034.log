@@ -1,0 +1,4 @@
+--- FAIL: TestSortByPriority (0.00s)
+    sort_test.go:37: expected [high medium low], got [low medium high]
+    sort_test.go:38: comparator returns the inverse of the documented order
+FAIL	github.com/acme/orders/internal/queue	0.010s

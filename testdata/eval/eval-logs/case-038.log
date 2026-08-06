@@ -1,0 +1,3 @@
+Run ./scripts/release-check.sh
+checking release artifacts
+##[error]Process completed with exit code 1.

@@ -1,0 +1,6 @@
+fatal error: all goroutines are asleep - deadlock!
+
+goroutine 1 [chan receive]:
+github.com/acme/orders/internal/pipeline.TestFanIn(0xc0000d2340)
+	/home/runner/work/orders/orders/internal/pipeline/fanin_test.go:38 +0x145
+FAIL	github.com/acme/orders/internal/pipeline	120.004s

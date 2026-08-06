@@ -1,0 +1,7 @@
+runtime: VirtualAlloc of 1073741824 bytes failed with errno=1455
+fatal error: out of memory
+
+runtime stack:
+runtime.throw({0x11f2c31?, 0x0?})
+	/usr/local/go/src/runtime/panic.go:1023 +0x5c
+FAIL	github.com/acme/orders/internal/index	31.004s

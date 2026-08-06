@@ -1,0 +1,7 @@
+==================================== FAILURES ====================================
+_______________________ test_cache_returns_fresh_value _________________________
+tests/test_cache.py:41: in test_cache_returns_fresh_value
+    assert cache.get("k") == "v2"
+E   AssertionError: assert 'v1' == 'v2'
+E   note: passes when run with -p no:randomly; module-level cache is shared
+=============================== 1 failed in 2.14s ==============================

@@ -1,0 +1,4 @@
+Prepare all required actions
+Getting action download info
+##[error]Failed to download action 'https://api.github.com/repos/actions/setup-go/tarball/v5'. Error: The request was canceled due to the configured HttpClient.Timeout of 100 seconds elapsing.
+##[error]Fail to load actions/setup-go@v5

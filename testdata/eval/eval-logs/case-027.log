@@ -1,0 +1,4 @@
+--- FAIL: TestRegisterHandler (0.00s)
+    registry_test.go:31: duplicate handler registered for route /v1/orders
+    registry_test.go:32: registry is package-level and shared across tests
+FAIL	github.com/acme/orders/internal/httpapi	0.012s

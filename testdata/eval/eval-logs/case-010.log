@@ -1,0 +1,4 @@
+--- FAIL: TestEventualConsistency (0.51s)
+    consistency_test.go:41: waited 500ms for the projection to catch up
+    consistency_test.go:44: expected 3 projected events, got 2
+FAIL	github.com/acme/orders/internal/projection	0.523s

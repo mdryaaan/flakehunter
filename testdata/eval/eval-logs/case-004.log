@@ -1,0 +1,3 @@
+--- FAIL: TestReplicaFailover (12.44s)
+    replica_test.go:88: read tcp 10.1.4.22:54344->10.1.4.90:5432: read: connection reset by peer
+FAIL

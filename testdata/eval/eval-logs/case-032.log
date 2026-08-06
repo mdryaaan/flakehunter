@@ -1,0 +1,7 @@
+--- FAIL: TestVATRounding (0.00s)
+    vat_test.go:66:
+        	Error:      	Not equal:
+        	            	expected: 2000
+        	            	actual  : 1999
+        	Test:       	TestVATRounding
+FAIL	github.com/acme/orders/internal/tax	0.011s

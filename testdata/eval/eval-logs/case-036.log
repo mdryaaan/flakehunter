@@ -1,0 +1,3 @@
+Run make verify
+make: *** [Makefile:42: verify] Error 1
+##[error]Process completed with exit code 2.

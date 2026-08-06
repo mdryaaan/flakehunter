@@ -1,0 +1,11 @@
+==================
+WARNING: DATA RACE
+Write at 0x00c0001b2090 by goroutine 23:
+  github.com/acme/orders/internal/cache.(*LRU).Put()
+      /home/runner/work/orders/orders/internal/cache/lru.go:112 +0x94
+Previous write at 0x00c0001b2090 by goroutine 21:
+  github.com/acme/orders/internal/cache.(*LRU).Put()
+      /home/runner/work/orders/orders/internal/cache/lru.go:112 +0x94
+==================
+--- FAIL: TestLRUConcurrent (0.03s)
+    testing.go:1398: race detected during execution of test

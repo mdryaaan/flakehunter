@@ -1,0 +1,3 @@
+--- FAIL: TestOrderSerialisation (0.00s)
+    order_test.go:120: assertion failed: required field "customer_id" missing from marshalled payload
+FAIL	github.com/acme/orders/internal/model	0.013s

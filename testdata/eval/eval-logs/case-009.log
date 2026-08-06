@@ -1,0 +1,7 @@
+fatal error: concurrent map read and map write
+
+goroutine 41 [running]:
+github.com/acme/orders/internal/registry.(*Registry).Lookup(...)
+	/home/runner/work/orders/orders/internal/registry/registry.go:64
+exit status 2
+FAIL	github.com/acme/orders/internal/registry	0.104s

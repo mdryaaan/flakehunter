@@ -1,0 +1,246 @@
+{
+  "description": "Hand-labelled flaky CI failure excerpts used to measure classifier accuracy.",
+  "label_policy": "Each case is labelled with the single root cause a maintainer would act on. Cases where the excerpt genuinely lacks the evidence to decide are labelled 'unknown' on purpose \u2014 a classifier that guesses confidently on those is worse than one that abstains.",
+  "cases": [
+    {
+      "id": "case-001",
+      "log": "eval-logs/case-001.log",
+      "expected_category": "network_timeout",
+      "note": "Go module proxy dial timeout during dependency download"
+    },
+    {
+      "id": "case-002",
+      "log": "eval-logs/case-002.log",
+      "expected_category": "network_timeout",
+      "note": "HTTP client timeout hitting an internal service in an integration test"
+    },
+    {
+      "id": "case-003",
+      "log": "eval-logs/case-003.log",
+      "expected_category": "network_timeout",
+      "note": "TLS handshake timeout pulling a container image"
+    },
+    {
+      "id": "case-004",
+      "log": "eval-logs/case-004.log",
+      "expected_category": "network_timeout",
+      "note": "Connection reset by peer talking to a test database"
+    },
+    {
+      "id": "case-005",
+      "log": "eval-logs/case-005.log",
+      "expected_category": "network_timeout",
+      "note": "DNS resolution failure inside the runner"
+    },
+    {
+      "id": "case-006",
+      "log": "eval-logs/case-006.log",
+      "expected_category": "network_timeout",
+      "note": "Connection refused because a dependent service was not yet listening"
+    },
+    {
+      "id": "case-007",
+      "log": "eval-logs/case-007.log",
+      "expected_category": "race_condition",
+      "note": "Go race detector reports concurrent map write"
+    },
+    {
+      "id": "case-008",
+      "log": "eval-logs/case-008.log",
+      "expected_category": "race_condition",
+      "note": "Send on closed channel under concurrency"
+    },
+    {
+      "id": "case-009",
+      "log": "eval-logs/case-009.log",
+      "expected_category": "race_condition",
+      "note": "Fatal concurrent map read and write"
+    },
+    {
+      "id": "case-010",
+      "log": "eval-logs/case-010.log",
+      "expected_category": "race_condition",
+      "note": "Test relies on a sleep and loses the race under load"
+    },
+    {
+      "id": "case-011",
+      "log": "eval-logs/case-011.log",
+      "expected_category": "race_condition",
+      "note": "Deadlock detected by the Go runtime"
+    },
+    {
+      "id": "case-012",
+      "log": "eval-logs/case-012.log",
+      "expected_category": "race_condition",
+      "note": "Race detector flags unsynchronised access to a shared counter"
+    },
+    {
+      "id": "case-013",
+      "log": "eval-logs/case-013.log",
+      "expected_category": "infra_flake",
+      "note": "Runner received a shutdown signal mid-job"
+    },
+    {
+      "id": "case-014",
+      "log": "eval-logs/case-014.log",
+      "expected_category": "infra_flake",
+      "note": "Runner lost communication with the Actions service"
+    },
+    {
+      "id": "case-015",
+      "log": "eval-logs/case-015.log",
+      "expected_category": "infra_flake",
+      "note": "Action download failed from the Actions service"
+    },
+    {
+      "id": "case-016",
+      "log": "eval-logs/case-016.log",
+      "expected_category": "infra_flake",
+      "note": "Docker daemon unavailable on the runner"
+    },
+    {
+      "id": "case-017",
+      "log": "eval-logs/case-017.log",
+      "expected_category": "infra_flake",
+      "note": "Spot instance reclaimed during the job"
+    },
+    {
+      "id": "case-018",
+      "log": "eval-logs/case-018.log",
+      "expected_category": "infra_flake",
+      "note": "Cache service returned 503 while restoring"
+    },
+    {
+      "id": "case-019",
+      "log": "eval-logs/case-019.log",
+      "expected_category": "resource_exhaustion",
+      "note": "Runner disk filled during the build"
+    },
+    {
+      "id": "case-020",
+      "log": "eval-logs/case-020.log",
+      "expected_category": "resource_exhaustion",
+      "note": "Test process OOM-killed by the kernel"
+    },
+    {
+      "id": "case-021",
+      "log": "eval-logs/case-021.log",
+      "expected_category": "resource_exhaustion",
+      "note": "Go runtime cannot allocate memory"
+    },
+    {
+      "id": "case-022",
+      "log": "eval-logs/case-022.log",
+      "expected_category": "resource_exhaustion",
+      "note": "File descriptor limit exhausted by parallel tests"
+    },
+    {
+      "id": "case-023",
+      "log": "eval-logs/case-023.log",
+      "expected_category": "resource_exhaustion",
+      "note": "Container OOMKilled in an integration test"
+    },
+    {
+      "id": "case-024",
+      "log": "eval-logs/case-024.log",
+      "expected_category": "resource_exhaustion",
+      "note": "Node build runs out of heap"
+    },
+    {
+      "id": "case-025",
+      "log": "eval-logs/case-025.log",
+      "expected_category": "test_order_dependency",
+      "note": "Failure only reproduces with -shuffle enabled"
+    },
+    {
+      "id": "case-026",
+      "log": "eval-logs/case-026.log",
+      "expected_category": "test_order_dependency",
+      "note": "Test passes in isolation but fails in the suite"
+    },
+    {
+      "id": "case-027",
+      "log": "eval-logs/case-027.log",
+      "expected_category": "test_order_dependency",
+      "note": "Global registry retains state between tests"
+    },
+    {
+      "id": "case-028",
+      "log": "eval-logs/case-028.log",
+      "expected_category": "test_order_dependency",
+      "note": "Shared temp directory reused by a sibling test"
+    },
+    {
+      "id": "case-029",
+      "log": "eval-logs/case-029.log",
+      "expected_category": "test_order_dependency",
+      "note": "Environment variable leaked from an earlier test"
+    },
+    {
+      "id": "case-030",
+      "log": "eval-logs/case-030.log",
+      "expected_category": "test_order_dependency",
+      "note": "Ordering-dependent failure in a Python suite"
+    },
+    {
+      "id": "case-031",
+      "log": "eval-logs/case-031.log",
+      "expected_category": "genuine_bug",
+      "note": "Nil pointer dereference in application code"
+    },
+    {
+      "id": "case-032",
+      "log": "eval-logs/case-032.log",
+      "expected_category": "genuine_bug",
+      "note": "Off-by-one rounding error in a deterministic assertion"
+    },
+    {
+      "id": "case-033",
+      "log": "eval-logs/case-033.log",
+      "expected_category": "genuine_bug",
+      "note": "Index out of range on an empty slice"
+    },
+    {
+      "id": "case-034",
+      "log": "eval-logs/case-034.log",
+      "expected_category": "genuine_bug",
+      "note": "Wrong sort order returned by application logic"
+    },
+    {
+      "id": "case-035",
+      "log": "eval-logs/case-035.log",
+      "expected_category": "genuine_bug",
+      "note": "JSON schema validation fails on a required field"
+    },
+    {
+      "id": "case-036",
+      "log": "eval-logs/case-036.log",
+      "expected_category": "unknown",
+      "note": "Bare non-zero exit with no diagnostic output"
+    },
+    {
+      "id": "case-037",
+      "log": "eval-logs/case-037.log",
+      "expected_category": "unknown",
+      "note": "Log truncated before the failure reason was printed"
+    },
+    {
+      "id": "case-038",
+      "log": "eval-logs/case-038.log",
+      "expected_category": "unknown",
+      "note": "Generic step failure with no stack or message"
+    },
+    {
+      "id": "case-039",
+      "log": "eval-logs/case-039.log",
+      "expected_category": "unknown",
+      "note": "Ambiguous timeout with no indication of cause"
+    },
+    {
+      "id": "case-040",
+      "log": "eval-logs/case-040.log",
+      "expected_category": "unknown",
+      "note": "Empty failure with only the job footer"
+    }
+  ]
+}

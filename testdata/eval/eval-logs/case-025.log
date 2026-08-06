@@ -1,0 +1,5 @@
+go test ./internal/auth/... -shuffle=on -count=1
+-test.shuffle 1755501234567890123
+--- FAIL: TestTokenRefresh (0.00s)
+    token_test.go:52: expected cached signing key to be present, got nil
+FAIL	github.com/acme/orders/internal/auth	0.019s

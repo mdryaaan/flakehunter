@@ -1,0 +1,4 @@
+panic: test timed out after 10m0s
+running tests:
+	TestFullSuite (10m0s)
+FAIL	github.com/acme/orders/test/e2e	600.021s

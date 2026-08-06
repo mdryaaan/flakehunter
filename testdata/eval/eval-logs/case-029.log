@@ -1,0 +1,4 @@
+--- FAIL: TestDefaultRegion (0.00s)
+    config_test.go:28: expected default region us-east-1, got eu-west-2
+    config_test.go:29: AWS_REGION was set by a previous test and never unset
+FAIL	github.com/acme/orders/internal/config	0.008s

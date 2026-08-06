@@ -1,0 +1,8 @@
+panic: send on closed channel
+
+goroutine 88 [running]:
+github.com/acme/orders/internal/worker.(*Pool).dispatch(0xc000112000)
+	/home/runner/work/orders/orders/internal/worker/pool.go:143 +0x1cc
+created by github.com/acme/orders/internal/worker.(*Pool).Start
+	/home/runner/work/orders/orders/internal/worker/pool.go:97 +0xd8
+FAIL	github.com/acme/orders/internal/worker	0.212s

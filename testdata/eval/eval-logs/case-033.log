@@ -1,0 +1,6 @@
+panic: runtime error: index out of range [0] with length 0
+
+goroutine 7 [running]:
+github.com/acme/orders/internal/batch.First(...)
+	/home/runner/work/orders/orders/internal/batch/batch.go:22
+FAIL	github.com/acme/orders/internal/batch	0.009s

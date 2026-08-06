@@ -1,0 +1,4 @@
+<--- Last few GCs --->
+[1893:0x5f8a2c0]    38412 ms: Mark-sweep 2043.1 (2077.5) -> 2042.3 (2077.5) MB
+FATAL ERROR: Reached heap limit Allocation failed - JavaScript heap out of memory
+##[error]Process completed with exit code 134.

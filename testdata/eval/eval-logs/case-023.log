@@ -1,0 +1,3 @@
+Waiting for container orders-postgres to become healthy
+container orders-postgres exited with code 137 (OOMKilled)
+##[error]Integration environment failed to start

@@ -1,0 +1,4 @@
+--- FAIL: TestMigrateIdempotent (0.04s)
+    migrate_test.go:96: table "orders" already exists
+    migrate_test.go:97: note: this test passes in isolation; a previous test left the schema behind
+FAIL	github.com/acme/orders/internal/migrate	0.061s

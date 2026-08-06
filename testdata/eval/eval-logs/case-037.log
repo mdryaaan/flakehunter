@@ -1,0 +1,4 @@
+ok  	github.com/acme/orders/internal/model	0.402s
+ok  	github.com/acme/orders/internal/store	1.221s
+FAIL
+##[error]Process completed with exit code 1.

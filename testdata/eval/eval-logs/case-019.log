@@ -1,0 +1,4 @@
+Run make build-all
+go build -o dist/linux-amd64/orders ./cmd/orders
+write /home/runner/work/orders/orders/dist/linux-arm64/orders: no space left on device
+##[error]Process completed with exit code 1.

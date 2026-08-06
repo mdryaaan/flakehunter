@@ -1,0 +1,4 @@
+--- FAIL: TestCheckoutIntegration (30.01s)
+    checkout_test.go:204: POST http://inventory.svc.cluster.local:8080/reserve failed
+    checkout_test.go:205: context deadline exceeded (Client.Timeout exceeded while awaiting headers)
+FAIL	github.com/acme/orders/internal/checkout	30.033s

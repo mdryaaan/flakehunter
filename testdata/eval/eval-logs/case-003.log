@@ -1,0 +1,3 @@
+Pulling image ghcr.io/acme/test-fixtures:2.4.1
+Error response from daemon: Get "https://ghcr.io/v2/": net/http: TLS handshake timeout
+##[error]Docker pull failed with exit code 1

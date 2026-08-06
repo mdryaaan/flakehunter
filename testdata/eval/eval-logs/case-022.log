@@ -1,0 +1,3 @@
+--- FAIL: TestParallelConnections (2.11s)
+    pool_test.go:77: dial tcp 127.0.0.1:5432: socket: too many open files
+FAIL	github.com/acme/orders/internal/db	2.140s

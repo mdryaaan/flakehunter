@@ -1,0 +1,4 @@
+go test ./internal/index/... -count=1
+signal: killed
+FAIL	github.com/acme/orders/internal/index	48.221s
+##[error]Process completed with exit code 137.

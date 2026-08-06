@@ -1,0 +1,4 @@
+--- FAIL: TestSnapshotWrite (0.01s)
+    snapshot_test.go:44: open /tmp/acme-test-fixtures/snapshot.db: file exists
+    snapshot_test.go:45: shared fixture directory was not cleaned by the previous test
+FAIL	github.com/acme/orders/internal/snapshot	0.020s
