@@ -1,0 +1,122 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: Test (Go ${{ matrix.go }})
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    strategy:
+      fail-fast: false
+      matrix:
+        go: ['1.22', '1.23', '1.24']
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version: ${{ matrix.go }}
+          cache: true
+
+      - run: go mod download
+
+      - name: Verify go.mod is tidy
+        if: matrix.go == '1.22'
+        run: |
+          go mod tidy
+          git diff --exit-code -- go.mod go.sum \
+            || (echo "::error::run 'go mod tidy'" && exit 1)
+
+      - run: go vet ./...
+
+      - run: go test ./... -race -coverprofile=coverage.out -covermode=atomic
+
+      - name: Coverage summary
+        if: matrix.go == '1.22'
+        run: |
+          go tool cover -func=coverage.out | tail -1
+          {
+            echo '### Coverage'
+            echo '```'
+            go tool cover -func=coverage.out | tail -1
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: '1.22'
+          cache: true
+
+      - name: gofmt
+        run: |
+          unformatted=$(gofmt -l .)
+          if [ -n "$unformatted" ]; then
+            echo "::error::needs gofmt:"; echo "$unformatted"; exit 1
+          fi
+
+      - uses: golangci/golangci-lint-action@v6
+        with:
+          version: v1.62.2
+          args: --timeout=5m
+
+  smoke:
+    name: Offline pipeline
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: '1.22'
+          cache: true
+
+      # Exercises the whole tool without a token or network access, using the
+      # bundled fixtures. This is the same path a reviewer runs locally.
+      - name: scan → classify → report
+        run: |
+          go build -o flakehunter ./main.go
+
+          ./flakehunter version
+          ./flakehunter scan --offline --fixtures ./testdata/fixtures --output scan.json
+
+          echo "--- detection must find exactly the four seeded flaky signatures ---"
+          found=$(python3 -c "import json;print(len(json.load(open('scan.json'))['occurrences']))")
+          if [ "$found" != "4" ]; then
+            echo "::error::expected 4 flaky occurrences, got $found"; exit 1
+          fi
+
+          ./flakehunter classify --input scan.json --provider deterministic \
+            --offline --fixtures ./testdata/fixtures --output classified.json
+          ./flakehunter report --input classified.json --format markdown > report.md
+          ./flakehunter report --input classified.json --format issue   > issue.md
+          ./flakehunter report --input classified.json --format digest  > digest.md
+
+          test -s report.md && test -s issue.md && test -s digest.md
+
+      - name: Baseline accuracy must not regress
+        run: |
+          ./flakehunter eval --provider deterministic --json eval.json
+          acc=$(python3 -c "import json;print(json.load(open('eval.json'))['accuracy'])")
+          echo "baseline accuracy: $acc"
+          python3 -c "
+          import json,sys
+          a=json.load(open('eval.json'))['accuracy']
+          sys.exit(0 if a >= 0.70 else 1)
+          " || (echo "::error::baseline accuracy fell below 0.70"; exit 1)
