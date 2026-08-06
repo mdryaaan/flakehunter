@@ -1,0 +1,92 @@
+# Reusable weekly flake digest.
+#
+# Drop this into .github/workflows/ in your own repository. It scans the last
+# seven days of CI, classifies every flaky occurrence, and posts a digest as a
+# GitHub issue.
+#
+# Defaults to the deterministic rule-based classifier so it works with no extra
+# setup. To use a language model instead, either point OLLAMA_HOST at a reachable
+# Ollama instance, or set the ANTHROPIC_API_KEY secret and switch PROVIDER.
+name: Weekly flake digest
+
+on:
+  schedule:
+    # Monday 06:00 UTC, before most people start triaging.
+    - cron: '0 6 * * 1'
+  workflow_dispatch:
+    inputs:
+      days:
+        description: Days of history to scan
+        required: false
+        default: '7'
+      provider:
+        description: 'deterministic | ollama | claude'
+        required: false
+        default: deterministic
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  digest:
+    name: Scan, classify and post
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      DAYS: ${{ github.event.inputs.days || '7' }}
+      PROVIDER: ${{ github.event.inputs.provider || 'deterministic' }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version: '1.22'
+
+      - name: Install flakehunter
+        run: go install github.com/mdryaaan/flakehunter@latest
+
+      - name: Scan for flaky occurrences
+        env:
+          # The default token can read this repository's Actions history.
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          flakehunter scan \
+            --repo "${GITHUB_REPOSITORY}" \
+            --days "${DAYS}" \
+            --output scan.json
+
+      - name: Classify root causes
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          flakehunter classify \
+            --input scan.json \
+            --provider "${PROVIDER}" \
+            --output classified.json
+
+      - name: Render the digest
+        run: |
+          flakehunter report \
+            --input classified.json \
+            --format digest \
+            --since "${DAYS}" \
+            --output digest.md
+          cat digest.md >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Post the digest as an issue
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # Skip the issue entirely when CI was clean — a weekly "nothing to
+          # report" issue is exactly how a bot gets muted.
+          if grep -q "No flaky occurrences detected" digest.md; then
+            echo "CI was clean this week; not opening an issue."
+            exit 0
+          fi
+
+          gh issue create \
+            --title "Flake digest — week of $(date -u +%Y-%m-%d)" \
+            --body-file digest.md \
+            --label "ci,flaky-test"
