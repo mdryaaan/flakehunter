@@ -2,9 +2,6 @@
 package cmd
 
 import (
-	"fmt"
-	"os"
-
 	"github.com/spf13/cobra"
 
 	"github.com/mdryaaan/flakehunter/internal/config"
@@ -43,10 +40,4 @@ func init() {
 		"sampling temperature; 0 keeps classification repeatable")
 	pf.Float64Var(&cfg.MinConfidence, "min-confidence", cfg.MinConfidence,
 		"verdicts below this confidence are reported as unknown")
-}
-
-// fail prints an error consistently and exits non-zero.
-func fail(err error) {
-	fmt.Fprintf(os.Stderr, "flakehunter: %v\n", err)
-	os.Exit(1)
 }

@@ -6,9 +6,10 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/mdryaaan/flakehunter/internal/llm"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+
+	"github.com/mdryaaan/flakehunter/internal/llm"
 )
 
 func writeCorpus(t *testing.T, body string) string {

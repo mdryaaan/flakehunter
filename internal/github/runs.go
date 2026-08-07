@@ -36,7 +36,7 @@ func (c *Client) ListJobResults(ctx context.Context, opts ListOptions) ([]detect
 
 	var out []detector.JobResult
 	for _, run := range runs {
-		attempts := int(run.GetRunAttempt())
+		attempts := run.GetRunAttempt()
 		if attempts < 1 {
 			attempts = 1
 		}

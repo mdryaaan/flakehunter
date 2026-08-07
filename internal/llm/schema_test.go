@@ -3,9 +3,10 @@ package llm
 import (
 	"testing"
 
-	"github.com/mdryaaan/flakehunter/internal/verdict"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+
+	"github.com/mdryaaan/flakehunter/internal/verdict"
 )
 
 func TestParseVerdict(t *testing.T) {

@@ -47,12 +47,12 @@ func ParseVerdict(raw string) (verdict.Verdict, error) {
 	var rv rawVerdict
 	decoder := json.NewDecoder(strings.NewReader(payload))
 	if err := decoder.Decode(&rv); err != nil {
-		return verdict.Verdict{}, fmt.Errorf("%w: %v", ErrMalformed, err)
+		return verdict.Verdict{}, fmt.Errorf("%w: %w", ErrMalformed, err)
 	}
 
 	category, err := verdict.ParseCategory(strings.ToLower(strings.TrimSpace(rv.Category)))
 	if err != nil {
-		return verdict.Verdict{}, fmt.Errorf("%w: %v", ErrMalformed, err)
+		return verdict.Verdict{}, fmt.Errorf("%w: %w", ErrMalformed, err)
 	}
 
 	v := verdict.Verdict{
@@ -64,7 +64,7 @@ func ParseVerdict(raw string) (verdict.Verdict, error) {
 	}
 
 	if err := v.Validate(); err != nil {
-		return verdict.Verdict{}, fmt.Errorf("%w: %v", ErrMalformed, err)
+		return verdict.Verdict{}, fmt.Errorf("%w: %w", ErrMalformed, err)
 	}
 
 	return v, nil

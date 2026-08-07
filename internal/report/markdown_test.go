@@ -5,10 +5,11 @@ import (
 	"testing"
 	"time"
 
-	"github.com/mdryaaan/flakehunter/internal/detector"
-	"github.com/mdryaaan/flakehunter/internal/verdict"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+
+	"github.com/mdryaaan/flakehunter/internal/detector"
+	"github.com/mdryaaan/flakehunter/internal/verdict"
 )
 
 func sampleResult() ClassifiedResult {

@@ -4,9 +4,10 @@ import (
 	"context"
 	"testing"
 
-	"github.com/mdryaaan/flakehunter/internal/verdict"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+
+	"github.com/mdryaaan/flakehunter/internal/verdict"
 )
 
 func TestDeterministicClassify(t *testing.T) {

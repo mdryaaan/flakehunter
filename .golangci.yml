@@ -1,0 +1,45 @@
+run:
+  timeout: 5m
+  tests: true
+
+linters:
+  enable:
+    - errcheck
+    - govet
+    - ineffassign
+    - staticcheck
+    - unused
+    - gofmt
+    - goimports
+    - misspell
+    - revive
+    - errorlint
+    - unconvert
+    - whitespace
+    - gosec
+
+linters-settings:
+  goimports:
+    local-prefixes: github.com/mdryaaan/flakehunter
+  misspell:
+    # No locale: the prose here is British, but the dependencies are not
+    # ("color", "normalize" in third-party APIs). Pinning either locale turns
+    # this linter into noise, so it only catches genuine typos.
+    ignore-words:
+      - color
+      - colour
+  revive:
+    rules:
+      - name: exported
+      - name: indent-error-flow
+      - name: errorf
+      - name: error-return
+      - name: error-strings
+      - name: unreachable-code
+
+issues:
+  max-issues-per-linter: 0
+  max-same-issues: 0
+  exclude-rules:
+    - path: _test\.go
+      linters: [errcheck, gosec]

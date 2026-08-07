@@ -6,9 +6,10 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/mdryaaan/flakehunter/internal/detector"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+
+	"github.com/mdryaaan/flakehunter/internal/detector"
 )
 
 func fixtureDir(t *testing.T) string {

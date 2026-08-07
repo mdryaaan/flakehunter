@@ -3,8 +3,9 @@ package eval
 import (
 	"testing"
 
-	"github.com/mdryaaan/flakehunter/internal/verdict"
 	"github.com/stretchr/testify/assert"
+
+	"github.com/mdryaaan/flakehunter/internal/verdict"
 )
 
 func TestScorePerfect(t *testing.T) {
