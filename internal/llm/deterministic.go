@@ -169,7 +169,9 @@ func (d *Deterministic) Classify(_ context.Context, req Request) (verdict.Verdic
 		confidence = 0.92
 	}
 
-	citations := matched[best.category]
+	// Several rules routinely match the same line; quoting it three times is
+	// noise, not corroboration.
+	citations := dedupe(matched[best.category])
 	if len(citations) > 3 {
 		citations = citations[:3]
 	}
@@ -177,11 +179,25 @@ func (d *Deterministic) Classify(_ context.Context, req Request) (verdict.Verdic
 	return verdict.Verdict{
 		Category:   best.category,
 		Confidence: confidence,
-		Explanation: fmt.Sprintf("Matched %s patterns for %s. %s.",
+		Explanation: fmt.Sprintf("Matched %s for %s. %s.",
 			plural(len(matched[best.category])), best.category.Label(), BaselineDisclaimer),
 		CitedLines:          citations,
 		SuggestedMitigation: verdict.MitigationFor(best.category).Summary,
 	}, nil
+}
+
+// dedupe removes repeated citations while preserving first-seen order.
+func dedupe(lines []string) []string {
+	seen := make(map[string]struct{}, len(lines))
+	out := make([]string, 0, len(lines))
+	for _, line := range lines {
+		if _, ok := seen[line]; ok {
+			continue
+		}
+		seen[line] = struct{}{}
+		out = append(out, line)
+	}
+	return out
 }
 
 func plural(n int) string {
