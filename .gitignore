@@ -25,3 +25,4 @@ digest.md
 .idea/
 .vscode/
 .claude/
+/dist/

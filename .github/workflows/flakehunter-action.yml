@@ -36,15 +36,36 @@ jobs:
     env:
       DAYS: ${{ github.event.inputs.days || '7' }}
       PROVIDER: ${{ github.event.inputs.provider || 'deterministic' }}
+      FLAKEHUNTER_VERSION: latest
     steps:
       - uses: actions/checkout@v4
 
-      - uses: actions/setup-go@v5
-        with:
-          go-version: '1.22'
-
+      # Download the prebuilt binary rather than compiling from source: it turns
+      # a ~20s Go build into a ~2s download and drops the toolchain requirement.
+      # Falls back to `go install` if no release asset matches.
       - name: Install flakehunter
-        run: go install github.com/mdryaaan/flakehunter@latest
+        run: |
+          set -euo pipefail
+          version="${FLAKEHUNTER_VERSION}"
+          if [ "$version" = "latest" ]; then
+            release_json=$(curl -sSfL https://api.github.com/repos/mdryaaan/flakehunter/releases/latest)
+            version=$(printf '%s' "$release_json" | grep '"tag_name"' | head -1 | cut -d'"' -f4)
+          fi
+
+          url="https://github.com/mdryaaan/flakehunter/releases/download/${version}/flakehunter_${version#v}_linux_amd64.tar.gz"
+          if curl -sSfL "$url" -o /tmp/fh.tar.gz; then
+            tar -xzf /tmp/fh.tar.gz -C /tmp flakehunter
+            sudo install -m 0755 /tmp/flakehunter /usr/local/bin/flakehunter
+          else
+            echo "no release asset at ${url}; building from source"
+            curl -sSfL https://go.dev/dl/go1.22.7.linux-amd64.tar.gz -o /tmp/go.tgz
+            sudo tar -C /usr/local -xzf /tmp/go.tgz
+            export PATH="/usr/local/go/bin:$(go env GOPATH 2>/dev/null || echo "$HOME/go")/bin:$PATH"
+            /usr/local/go/bin/go install github.com/mdryaaan/flakehunter@latest
+            sudo install -m 0755 "$HOME/go/bin/flakehunter" /usr/local/bin/flakehunter
+          fi
+
+          flakehunter version
 
       - name: Scan for flaky occurrences
         env:

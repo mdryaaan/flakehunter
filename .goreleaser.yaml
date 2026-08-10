@@ -1,0 +1,84 @@
+version: 2
+
+project_name: flakehunter
+
+before:
+  hooks:
+    - go mod tidy
+    - go test ./...
+
+builds:
+  - id: flakehunter
+    main: ./main.go
+    binary: flakehunter
+    env:
+      # Static binaries so the release runs on any distro and inside scratch
+      # or distroless images.
+      - CGO_ENABLED=0
+    goos: [linux, darwin, windows]
+    goarch: [amd64, arm64]
+    flags:
+      - -trimpath
+    ldflags:
+      - -s -w
+      - -X github.com/mdryaaan/flakehunter/pkg/version.Version={{ .Version }}
+      - -X github.com/mdryaaan/flakehunter/pkg/version.Commit={{ .ShortCommit }}
+      - -X github.com/mdryaaan/flakehunter/pkg/version.BuildDate={{ .Date }}
+
+archives:
+  - id: default
+    formats: [tar.gz]
+    format_overrides:
+      - goos: windows
+        formats: [zip]
+    name_template: '{{ .ProjectName }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}'
+    files:
+      - README.md
+      - LICENSE
+      # Shipping the corpus and fixtures means anyone can reproduce the eval
+      # numbers straight from a release, without cloning.
+      - testdata/**/*
+
+checksum:
+  name_template: checksums.txt
+
+sboms:
+  - artifacts: archive
+
+changelog:
+  use: github
+  sort: asc
+  groups:
+    - title: Features
+      regexp: '^feat'
+      order: 0
+    - title: Fixes
+      regexp: '^fix'
+      order: 1
+    - title: Other
+      order: 99
+  filters:
+    exclude:
+      - '^docs:'
+      - '^test:'
+      - '^chore:'
+      - Merge pull request
+
+release:
+  draft: false
+  prerelease: auto
+  footer: |
+    ## Install
+
+    ```bash
+    go install github.com/mdryaaan/flakehunter@{{ .Tag }}
+    ```
+
+    Or download a binary below and put it on your `PATH`.
+
+    ## Verify it works, with no credentials
+
+    ```bash
+    flakehunter scan --offline --fixtures ./testdata/fixtures
+    flakehunter eval --provider deterministic
+    ```
