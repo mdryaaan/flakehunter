@@ -11,8 +11,14 @@ coverage.*
 # Local scratch
 /dist/
 *.local.json
-scan-results.json
-classified-results.json
+# These names must match what the Makefile's `pipeline` target actually writes;
+# they previously did not, so the artifacts were committed by accident.
+scan.json
+classified.json
+eval.json
+report.md
+issue.md
+digest.md
 
 # Editor / OS
 .DS_Store

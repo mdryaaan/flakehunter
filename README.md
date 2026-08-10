@@ -15,39 +15,26 @@
 
 ## Features
 
-- 🎯 **Real flake detection, not "any red run"** — a job counts as flaky only when the *same job*, on the *same commit*, produced both a pass and a failure. A red commit followed by a green one is someone fixing the build.
-- 🧠 **LLM root-cause classification** into seven categories, with a confidence score and cited evidence
-- 📐 **Schema-constrained output** — every verdict is validated against a fixed JSON contract; malformed responses get one repair attempt, then fail honestly
-- 🚫 **Fabricated citations are dropped** — every quoted line is checked against the excerpt it claims to come from
-- 📊 **Measured accuracy** — a 40-case hand-labelled corpus, with precision, recall, F1 and a confusion matrix
-- 🏠 **Ollama by default** — no API key, no CI logs leaving your machine
-- 🔌 **Offline mode** — the whole pipeline runs against bundled fixtures with no token and no network
-- ✂️ **Context-aware chunking** — keeps the command echo and the failure window, not a blind byte slice
-- 📝 **Four output formats** — markdown report, JSON, GitHub issue body, weekly digest
-- ⚙️ **Ships as a GitHub Action** — drop-in weekly flake digest for your own repo
+- **Real flake detection, not "any red run"** — a job counts as flaky only when the *same job*, on the *same commit*, produced both a pass and a failure. A red commit followed by a green one is someone fixing the build.
+- **LLM root-cause classification** into seven categories, with a confidence score and cited evidence
+- **Schema-constrained output** — every verdict is validated against a fixed JSON contract; malformed responses get one repair attempt, then fail honestly
+- **Fabricated citations are dropped** — every quoted line is checked against the excerpt it claims to come from
+- **Measured accuracy** — a 40-case hand-labelled corpus, with precision, recall, F1 and a confusion matrix
+- **Ollama by default** — no API key, no CI logs leaving your machine
+- **Offline mode** — the whole pipeline runs against bundled fixtures with no token and no network
+- **Context-aware chunking** — keeps the command echo and the failure window, not a blind byte slice
+- **Four output formats** — markdown report, JSON, GitHub issue body, weekly digest
+- **Ships as a GitHub Action** — drop-in weekly flake digest for your own repo
 
 ---
 
 ## Architecture
 
-```mermaid
-flowchart TD
-    A[GitHub Actions API] -->|workflow runs + reruns| B
-    B[scan<br/>internal/github + internal/detector] -->|flaky occurrences| C
-    C[extract failure logs<br/>internal/extractor] -->|chunked log excerpt| D
-    D[classify<br/>internal/llm] --> E1[Ollama<br/>local, default]
-    D --> E2[Claude API<br/>optional]
-    D --> E3[Deterministic<br/>rule-based baseline]
-    E1 --> F
-    E2 --> F
-    E3 --> F
-    F[Structured Verdict<br/>category + confidence + citations] --> G[report<br/>internal/report]
-    G --> H1[Markdown report]
-    G --> H2[GitHub Issue body]
-    G --> H3[Weekly digest]
-    I[eval harness<br/>internal/eval] -->|accuracy, precision, recall| D
-    J[40 labelled fixtures] --> I
-```
+<p align="center">
+  <img src="./docs/arch.png"
+       alt="flakehunter pipeline: the GitHub Actions API feeds scan (internal/github + internal/detector), which yields flaky occurrences; internal/extractor pulls the failure logs and produces a chunked excerpt; internal/llm classifies it via Ollama, the Claude API, or the deterministic rule-based baseline; the structured verdict carries category, confidence and citations, and internal/report renders a markdown report, a GitHub issue body, or a weekly digest. A separate eval harness scores the classifier against 40 labelled fixtures."
+       width="620" />
+</p>
 
 ---
 
