@@ -5,6 +5,7 @@
 **Finds flaky tests in your GitHub Actions CI, uses an LLM to explain why they're flaky, and tells you how to fix them — runs fully offline with local models, no API key required.**
 
 [![CI](https://github.com/mdryaaan/flakehunter/actions/workflows/ci.yml/badge.svg)](https://github.com/mdryaaan/flakehunter/actions/workflows/ci.yml)
+[![Release](https://img.shields.io/github/v/release/mdryaaan/flakehunter?color=00ADD8&logo=github)](https://github.com/mdryaaan/flakehunter/releases/latest)
 [![Go](https://img.shields.io/badge/Go-1.22%2B-00ADD8?logo=go&logoColor=white)](https://go.dev)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE)
 [![Ollama](https://img.shields.io/badge/LLM-Ollama%20by%20default-000000)](https://ollama.com)
@@ -119,11 +120,25 @@ Three reasons, in order of how much they matter:
 
 ## Installation
 
+**Prebuilt binary** — no Go toolchain needed. Linux, macOS and Windows on amd64 and arm64, with checksums and an SBOM on every [release](https://github.com/mdryaaan/flakehunter/releases/latest):
+
+```bash
+VERSION=0.1.0
+curl -sSfL "https://github.com/mdryaaan/flakehunter/releases/download/v${VERSION}/flakehunter_${VERSION}_linux_amd64.tar.gz" \
+  | tar -xz flakehunter
+sudo install -m 0755 flakehunter /usr/local/bin/
+flakehunter version
+```
+
+Each archive also ships `testdata/`, so the eval numbers below are reproducible straight from a release without cloning.
+
+**With Go:**
+
 ```bash
 go install github.com/mdryaaan/flakehunter@latest
 ```
 
-Or from source:
+**From source:**
 
 ```bash
 git clone https://github.com/mdryaaan/flakehunter.git
@@ -200,9 +215,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@v5
-        with: { go-version: '1.22' }
-      - run: go install github.com/mdryaaan/flakehunter@latest
+      - run: |
+          curl -sSfL https://github.com/mdryaaan/flakehunter/releases/latest/download/flakehunter_0.1.0_linux_amd64.tar.gz \
+            | tar -xz flakehunter
+          sudo install -m 0755 flakehunter /usr/local/bin/
       - env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
@@ -213,6 +229,8 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: gh issue create --title "Flake digest" --body-file digest.md
 ```
+
+The shipped workflow downloads the prebuilt binary and only falls back to compiling from source if no matching release asset exists, so a scheduled run costs seconds rather than a Go build.
 
 It deliberately **skips opening an issue when CI was clean** — a weekly "nothing to report" issue is exactly how a bot gets muted.
 
