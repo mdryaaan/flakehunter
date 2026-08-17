@@ -9,7 +9,6 @@
 coverage.*
 
 # Local scratch
-/dist/
 *.local.json
 # These names must match what the Makefile's `pipeline` target actually writes;
 # they previously did not, so the artifacts were committed by accident.
@@ -25,4 +24,3 @@ digest.md
 .idea/
 .vscode/
 .claude/
-/dist/
